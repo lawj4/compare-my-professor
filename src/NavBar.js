@@ -8,16 +8,16 @@ function NavBar() {
         <BrowserRouter>
           <nav>
 
-              <Link to="/">Home</Link>
-              <Link to="/rankings">Rankings</Link>
-              <Link to="/compare">Comparisons</Link>
+              <Link to="/compare-my-professor/">Home</Link>
+              <Link to="/compare-my-professor/rankings">Rankings</Link>
+              <Link to="/compare-my-professor/comparisons">Comparisons</Link>
 
           </nav>
     
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/rankings" element={<Rankings />} />
-            <Route path="/compare" element={<Compare />} />
+            <Route path="/compare-my-professor/" element={<Home />} />
+            <Route path="/compare-my-professor/rankings" element={<Rankings />} />
+            <Route path="/compare-my-professor/comparisons" element={<Compare />} />
           </Routes>
         </BrowserRouter>
       )

@@ -1,6 +1,6 @@
 
 import ProfessorList from "./ProfessorList";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function meanAvg(professors) {
   let total = 0;
@@ -17,11 +17,12 @@ function CourseCard(props) {
   
 
   const [appear, setAppear] = useState(false);
+  let renderedOutput;
   if (appear) {
-    var renderedOutput = 
+    renderedOutput = 
       <ProfessorList professors={props.professors} />
   } else {
-    var renderedOutput = <div></div>
+    renderedOutput = <div></div>
   }
   
   return (
