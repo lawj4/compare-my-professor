@@ -2,17 +2,21 @@
 import ProfessorList from "./ProfessorList";
 import { useState } from "react";
 
-function meanAvg(professors) {
+function meanAvg(props) {
   let total = 0;
-  for (var i = 0; i < professors.length; i++) {
-    total += professors[i].mmr;
+  let count = 0;
+
+  for (var i in props.professors) {
+    total += props.professors[i]['mmr'];
+    count ++;
   }
 
-  return Math.round(total / professors.length);
+  return Math.round(total / count);
 }
 
 function CourseCard(props) {
-  const difficulty = meanAvg(props.professors);
+
+  const difficulty = meanAvg(props);
 
   
 

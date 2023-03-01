@@ -1,8 +1,13 @@
 import ProfessorCard from "./ProfessorCard";
 
 function ProfessorList(props) {
-    var renderedOutput = props.professors.map(item =>
-        <ProfessorCard professors={item} />);
+  let arr = [];
+  for (var i in props.professors) {
+      arr.push(i);
+      
+  }
+    var renderedOutput = arr.map((item,index) =>
+        <ProfessorCard key={index} name={item} mmr={props.professors[item]['mmr']} comparisons={props.professors[item]['comparisons']} />);
 
       return (
         <div className = "profcontainer">

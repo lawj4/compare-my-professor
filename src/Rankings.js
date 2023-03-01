@@ -1,4 +1,17 @@
 import CourseCard from "./CourseCard";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, child, get, push } from "firebase/database";
+import { getAuth } from "firebase/auth";
+const firebaseConfig = {
+  apiKey: "AIzaSyDoxepJlqYXT4e9Q_xstE0tifmdb26F4Ak",
+  authDomain: "compare-my-professor.firebaseapp.com",
+  projectId: "compare-my-professor",
+  storageBucket: "compare-my-professor.appspot.com",
+  messagingSenderId: "452712035711",
+  appId: "1:452712035711:web:c48fe3a97b52148b68964a",
+  measurementId: "G-WL4J74MJV9",
+  databaseURL: "https://compare-my-professor-default-rtdb.firebaseio.com/",
+};
 
 var professor1 = {
   name: "Alberto Krone-Martins",
@@ -37,11 +50,36 @@ var courseData = {
   ics33: professors3,
 };
 
-function Rankings() {
-  var renderedOutput = Object.keys(courseData).map((item) => (
-    <CourseCard course={item} professors={courseData[item]} />
-  ));
+let overallData;
+let renderedOutput;
 
+
+function readCourseData() {
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const dbRef = ref(db);
+  get(child(dbRef, 'uci/ics/courses/'))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        var data = {}
+        for (var i in snapshot.val()) {
+          data[i] = snapshot.val()[i];
+        }
+        overallData = data;
+        renderedOutput = Object.keys(overallData).map((item) => (
+          <CourseCard key = {item} course={item} professors={overallData[item]} />
+        ));
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+export default function Rankings() {
+  readCourseData();
   return (
     <div>
       <div className="App container">{renderedOutput}</div>
@@ -49,4 +87,3 @@ function Rankings() {
   );
 }
 
-export default Rankings;
