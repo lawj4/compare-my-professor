@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { addProfessor } from "./Firebase";
+import { addProfessor, adjustProfessor } from "./Firebase";
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, child, get } from "firebase/database";
@@ -43,9 +43,14 @@ function handleSubmit(
   e.preventDefault();
 
   if (leftPresent && rightPresent) {
-    console.log('hi')
+    console.log(leftSchool+leftId,leftProfessorName)
+    adjustProfessor(leftSchool+leftId,leftProfessorName,rightSchool+rightId,rightProfessorName);
+  } else if (leftPresent) {
+    alert("right teacher does not exist")
+  } else if (rightPresent) {
+    alert("left teacher does not exist")
   } else {
-    console.log('bye')
+    alert("neither teacher exists")
   }
 }
 

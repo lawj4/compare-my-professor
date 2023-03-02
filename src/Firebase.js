@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, child, get, push } from "firebase/database";
+import { getDatabase, ref, set, child, get, push, update} from "firebase/database";
 import { getAuth } from "firebase/auth";
 
 
@@ -64,6 +64,40 @@ export function addProfessor(courseName, professorName) {
             );
         }
     });
+}
+
+
+ 
+
+export function adjustProfessor(courseName, professorName, otherCName, otherPName) {
+
+    courseName = courseName.toUpperCase();
+    professorName = toTitleCase(professorName);
+    console.log('got here')
+  const db = getDatabase();
+  const reference = ref(db, "uci/ics/" + courseName+"/"+professorName);
+    get(reference).then((snapshot) => {
+        if (snapshot.exists()) {
+            const reference2 = ref(db, "uci/ics/" + otherCName+"/"+otherPName);
+    get(reference2).then((snap2) => {
+        if (snap2.exists()) {
+            update(reference, 
+                {
+                mmr: snapshot.val()['mmr']-25,
+                comparisons: snapshot.val()['comparisons']+1
+              }
+            );
+            update(reference2, 
+                {
+                mmr: snap2.val()['mmr']+25,
+                comparisons: snap2.val()['comparisons']+1
+              }
+            );
+        }
+    });
+        }
+
+    });
     
-  
+
 }

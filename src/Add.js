@@ -25,7 +25,6 @@ function handleSubmit(e, school, id, professorName) {
     return;
   }
 
-  console.log(school, id, professorName);
 
   let courseName = school + id;
 

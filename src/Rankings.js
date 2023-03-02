@@ -1,5 +1,4 @@
 import CourseCard from "./CourseCard";
-
 import { useNavigate, redirect } from "react-router";
 import React, { useEffect, useState } from "react";
 import { render } from "@testing-library/react";
@@ -50,7 +49,7 @@ export default function Rankings() {
         }
 
         let sorted = Object.keys(data).sort(function (a, b) {
-          return meanAvg(data[a]) - meanAvg(data[b]);
+          return -(meanAvg(data[a]) - meanAvg(data[b]));
         });
         if (renderedOutput === badOutput) {
           setRenderedOutput(
@@ -81,6 +80,10 @@ export default function Rankings() {
   // console.log(storedOutput);
   return (
     <div>
+    <p>easier</p>
+    <p>   |</p>
+    <p>   v</p>
+    <p>harder</p>
       <div className="App container">{renderedOutput}</div>
     </div>
   );
