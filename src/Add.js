@@ -1,26 +1,78 @@
 import React from "react";
-import { getEntireDB, readCourseData, addProfessor, doesCourseProfExist} from './Firebase'
+import { addProfessor } from "./Firebase";
 
-function dontRefresh (e) {
-    e.preventDefault();
-    console.log('started');
-    addProfessor("ics31","Irene Gassko");
-    addProfessor("ics32","alex thornton");
-    addProfessor("ics32","richard pattis");
-    addProfessor("ics33","alex thornton");
-    addProfessor("ics45c","emily navarro");
+function mapArrayToOption(arr, callable) {
+  return (
+    <select onChange={callable}>
+      <option selected disabled>
+        Choose here
+      </option>
+      {arr.map((e) => {
+        return <option>{e}</option>;
+      })}
+    </select>
+  );
 }
 
+function handleSubmit(e, school, id, professorName) {
+  e.preventDefault();
+  if (
+    school.trim().length === 0 ||
+    id.trim().length === 0 ||
+    professorName.trim().length === 0
+  ) {
+    alert("ERROR: every entry must be filled in");
+    return;
+  }
+
+  console.log(school, id, professorName);
+
+  let courseName = school + id;
+
+  addProfessor(courseName, professorName);
+}
 
 export default function Add() {
-    
+  const [school, setSchool] = React.useState("");
+  const [id, setId] = React.useState("");
+  const [professorName, setProfessorName] = React.useState("");
+
+  const handleSchoolOption = (event) => {
+    setSchool(event.target.value);
+  };
+  const handleIdOption = (event) => {
+    setId(event.target.value);
+  };
+  const handleProfessorOption = (event) => {
+    setProfessorName(event.target.value);
+  };
 
   return (
     <div>
-      <form onSubmit={(e) => dontRefresh(e)}>
-        <label>Enter Mesage</label>
-        <input type="text" />
-        <button type="submit">save</button>
+      <form onSubmit={(e) => handleSubmit(e, school, id, professorName)}>
+        <label>School</label>
+        <br />
+        {mapArrayToOption(["ICS", "CS","IN4MATX","SWE","STATS"], handleSchoolOption)}
+        <br />
+        <label>Course ID</label>
+        <br />
+        <input
+          type="text"
+          placeholder="6D"
+          value={id}
+          onChange={handleIdOption}
+        />
+        <br />
+        <label>Professor Name</label>
+        <br />
+        <input
+          type="text"
+          placeholder="Doug Dimmadome"
+          value={professorName}
+          onChange={handleProfessorOption}
+        />
+        <br />
+        <button type="submit">enter</button>
       </form>
     </div>
   );

@@ -31,7 +31,7 @@ const app = initializeApp(firebaseConfig);
 
 export function writeCourseData(courseName, professorName) {
   const db = getDatabase(app);
-  const reference = ref(db, "courses/" + courseName.toUpperCase()+"/"+toTitleCase(professorName));
+  const reference = ref(db, courseName.toUpperCase()+"/"+toTitleCase(professorName));
   set(reference, 
     {
       mmr: 1000,
@@ -40,50 +40,9 @@ export function writeCourseData(courseName, professorName) {
 }
 
 
-export function readCourseData() {
-  const db = getDatabase(app);
-  const dbRef = ref(db);
-  get(child(dbRef, 'uci/ics/courses/'))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        var data = snapshot.val();
-        console.log(data);
-        return snapshot.val();
-      } else {
-        console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
 
 
 
-export function getEntireDB() {
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-  const dbRef = ref(db);
-  get(child(dbRef, 'uci/ics/courses/'))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log('exist',snapshot.val());
-        var data = [];
-        snapshot.forEach(e => {
-            data.push(e.val());
-        })
-        return data;
-      } else {
-        console.log("No data available");
-        return "no data";
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      return "error";
-    });
-    return "end"
-}
 
 
 export function addProfessor(courseName, professorName) {
@@ -91,7 +50,7 @@ export function addProfessor(courseName, professorName) {
     professorName = toTitleCase(professorName);
     
   const db = getDatabase();
-  const reference = ref(db, "uci/ics/courses/" + courseName+"/"+professorName);
+  const reference = ref(db, "uci/ics/" + courseName+"/"+professorName);
     get(reference).then((snapshot) => {
         if (snapshot.exists()) {
             // alert("That combination already exists.")

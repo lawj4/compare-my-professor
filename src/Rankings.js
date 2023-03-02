@@ -1,7 +1,12 @@
 import CourseCard from "./CourseCard";
+
+import { useNavigate, redirect } from "react-router";
+import React, { useEffect, useState } from "react";
+import { render } from "@testing-library/react";
+import loadingImg from "./images/loading.gif";
+
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, child, get, push } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import { getDatabase, ref, child, get } from "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyDoxepJlqYXT4e9Q_xstE0tifmdb26F4Ak",
   authDomain: "compare-my-professor.firebaseapp.com",
@@ -13,62 +18,47 @@ const firebaseConfig = {
   databaseURL: "https://compare-my-professor-default-rtdb.firebaseio.com/",
 };
 
-var professor1 = {
-  name: "Alberto Krone-Martins",
-  mmr: 564,
-};
-var professor2 = {
-  name: "Alex Thornton",
-  mmr: 1000,
-};
-var professor3 = {
-  name: "Richard Pattis",
-  mmr: 750,
-};
-const professors = [professor1, professor2, professor3];
+function meanAvg(props) {
+  let total = 0;
+  let count = 0;
 
-var professor4 = {
-  name: "Bob Krone-Martins",
-  mmr: 564,
-};
-var professor5 = {
-  name: "Emily Thornton",
-  mmr: 100,
-};
-const professors2 = [professor4, professor5];
+  for (var i in props) {
+    total += props[i]["mmr"];
+    count++;
+  }
 
-var professor6 = {
-  name: "Glendon Thai",
-  mmr: 234,
-};
+  return Math.round(total / count);
+}
 
-const professors3 = [professor6];
+export default function Rankings() {
+  let badOutput = (
+    <div id="img-load">
+      <img src={loadingImg} alt="loading..." width="100px" />
+    </div>
+  );
+  const [renderedOutput, setRenderedOutput] = useState(badOutput);
 
-var courseData = {
-  ics31: professors,
-  ics32: professors2,
-  ics33: professors3,
-};
-
-let overallData;
-let renderedOutput;
-
-
-function readCourseData() {
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const dbRef = ref(db);
-  get(child(dbRef, 'uci/ics/courses/'))
+  get(child(dbRef, "uci/ics/"))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        var data = {}
+        let data = {};
         for (var i in snapshot.val()) {
           data[i] = snapshot.val()[i];
         }
-        overallData = data;
-        renderedOutput = Object.keys(overallData).map((item) => (
-          <CourseCard key = {item} course={item} professors={overallData[item]} />
-        ));
+
+        let sorted = Object.keys(data).sort(function (a, b) {
+          return meanAvg(data[a]) - meanAvg(data[b]);
+        });
+        if (renderedOutput === badOutput) {
+          setRenderedOutput(
+            sorted.map((item) => (
+              <CourseCard key={item} course={item} professors={data[item]} />
+            ))
+          );
+        }
       } else {
         console.log("No data available");
       }
@@ -76,14 +66,22 @@ function readCourseData() {
     .catch((error) => {
       console.error(error);
     });
-}
 
-export default function Rankings() {
-  readCourseData();
+  if (renderedOutput === badOutput) {
+    console.log("bad");
+  } else {
+    console.log("good");
+  }
+
+  // console.log(renderedOutput)
+
+  //   localStorage.setItem("names", JSON.stringify(renderedOutput));
+
+  // var storedOutput = JSON.parse(localStorage.getItem("names"));
+  // console.log(storedOutput);
   return (
     <div>
       <div className="App container">{renderedOutput}</div>
     </div>
   );
 }
-
