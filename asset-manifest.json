@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/compare-my-professor/static/css/main.366e4a02.css",
-    "main.js": "/compare-my-professor/static/js/main.d8360022.js",
+    "main.css": "/compare-my-professor/static/css/main.09f9f9fd.css",
+    "main.js": "/compare-my-professor/static/js/main.64daa3f9.js",
     "static/media/loading.gif": "/compare-my-professor/static/media/loading.643ca93f3d490b698f16.gif",
     "index.html": "/compare-my-professor/index.html",
-    "main.366e4a02.css.map": "/compare-my-professor/static/css/main.366e4a02.css.map",
-    "main.d8360022.js.map": "/compare-my-professor/static/js/main.d8360022.js.map"
+    "main.09f9f9fd.css.map": "/compare-my-professor/static/css/main.09f9f9fd.css.map",
+    "main.64daa3f9.js.map": "/compare-my-professor/static/js/main.64daa3f9.js.map"
   },
   "entrypoints": [
-    "static/css/main.366e4a02.css",
-    "static/js/main.d8360022.js"
+    "static/css/main.09f9f9fd.css",
+    "static/js/main.64daa3f9.js"
   ]
 }
